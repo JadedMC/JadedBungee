@@ -1,0 +1,3 @@
+name: JadedBungee
+version: '${project.version}'
+main: net.jadedmc.jadedbungee.JadedBungee
