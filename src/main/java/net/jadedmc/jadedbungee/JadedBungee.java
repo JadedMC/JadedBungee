@@ -2,6 +2,9 @@ package net.jadedmc.jadedbungee;
 
 import net.jadedmc.jadedbungee.features.chat.ChannelManager;
 import net.jadedmc.jadedbungee.features.party.PartyManager;
+import net.jadedmc.jadedbungee.listeners.ChatListener;
+import net.jadedmc.jadedbungee.listeners.PlayerDisconnectListener;
+import net.jadedmc.jadedbungee.listeners.PostLoginListener;
 import net.jadedmc.jadedbungee.player.CustomPlayerManager;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -18,10 +21,15 @@ public final class JadedBungee extends Plugin {
         settingsManager = new SettingsManager(this);
 
         mySQL = new MySQL(this);
+        mySQL.openConnection();
 
         channelManager = new ChannelManager(this);
-        customPlayerManager = new CustomPlayerManager();
+        customPlayerManager = new CustomPlayerManager(this);
         partyManager = new PartyManager(this);
+
+        getProxy().getPluginManager().registerListener(this, new ChatListener(this));
+        getProxy().getPluginManager().registerListener(this, new PlayerDisconnectListener(this));
+        getProxy().getPluginManager().registerListener(this, new PostLoginListener(this));
     }
 
     @Override
