@@ -8,11 +8,17 @@ import net.md_5.bungee.api.plugin.Plugin;
 public final class JadedBungee extends Plugin {
     private ChannelManager channelManager;
     private CustomPlayerManager customPlayerManager;
+    private MySQL mySQL;
     private PartyManager partyManager;
+    private SettingsManager settingsManager;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+        settingsManager = new SettingsManager(this);
+
+        mySQL = new MySQL(this);
+
         channelManager = new ChannelManager(this);
         customPlayerManager = new CustomPlayerManager();
         partyManager = new PartyManager(this);
@@ -31,7 +37,15 @@ public final class JadedBungee extends Plugin {
         return customPlayerManager;
     }
 
+    public MySQL mySQL() {
+        return mySQL;
+    }
+
     public PartyManager partyManager() {
         return partyManager;
+    }
+
+    public SettingsManager settingsManager() {
+        return settingsManager;
     }
 }
