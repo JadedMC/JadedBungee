@@ -1,6 +1,7 @@
 package net.jadedmc.jadedbungee;
 
 import net.jadedmc.jadedbungee.features.chat.ChannelManager;
+import net.jadedmc.jadedbungee.features.chat.commands.ChatCMD;
 import net.jadedmc.jadedbungee.features.party.PartyManager;
 import net.jadedmc.jadedbungee.listeners.ChatListener;
 import net.jadedmc.jadedbungee.listeners.PlayerDisconnectListener;
@@ -30,6 +31,8 @@ public final class JadedBungee extends Plugin {
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerDisconnectListener(this));
         getProxy().getPluginManager().registerListener(this, new PostLoginListener(this));
+
+        getProxy().getPluginManager().registerCommand(this, new ChatCMD(this));
     }
 
     @Override

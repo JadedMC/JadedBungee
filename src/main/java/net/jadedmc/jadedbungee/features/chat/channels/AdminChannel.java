@@ -8,22 +8,21 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
- * A chat channel only visible to staff members.
+ * A chat channel only visible to administrators.
  */
-public class StaffChannel extends Channel {
+public class AdminChannel extends Channel {
     private final JadedBungee plugin;
 
     /**
      * Creates the channel.
-     * Name: STAFF
-     * Permission: staff.chat
+     * Name: ADMIN
+     * Permission: admin.chat
      * Aliases:
-     *   - s
-     *   - sc
+     *   - a
      * @param plugin Instance of the plugin.
      */
-    public StaffChannel(JadedBungee plugin) {
-        super("STAFF", "staff.chat", "s", "sc");
+    public AdminChannel(JadedBungee plugin) {
+        super("ADMIN", "admin.chat", "a");
 
         this.plugin = plugin;
     }
@@ -42,8 +41,8 @@ public class StaffChannel extends Channel {
         rank = rank.substring(0,1).toUpperCase() + rank.substring(1).toLowerCase();
 
         for(ProxiedPlayer viewer : ProxyServer.getInstance().getPlayers()) {
-            if(viewer.hasPermission("staff.chat")) {
-                ChatUtils.chat(viewer, "&4&l(&c&lStaff&4&l) &c&l" + rank + " &f" + player.getDisplayName() + " &8» &c" + message);
+            if(viewer.hasPermission("admin.chat")) {
+                ChatUtils.chat(viewer, "&4&l(&6&lAdmin&4&l) &6&l" + rank + " &f" + player.getDisplayName() + " &8» &6" + message);
             }
         }
 
