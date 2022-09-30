@@ -6,11 +6,11 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class StaffChatCMD extends Command {
+public class AdminChatCMD extends Command {
     private final JadedBungee plugin;
 
-    public StaffChatCMD(JadedBungee plugin) {
-        super("staffchat", "staff.chat", "sc");
+    public AdminChatCMD(JadedBungee plugin) {
+        super("adminchat", "admin.chat", "ac");
         this.plugin = plugin;
     }
 
@@ -20,13 +20,13 @@ public class StaffChatCMD extends Command {
             return;
         }
 
-        if(plugin.channelManager().getChannel(player).getName().equalsIgnoreCase("STAFF")) {
+        if(plugin.channelManager().getChannel(player).getName().equalsIgnoreCase("ADMIN")) {
             plugin.channelManager().setChannel(player, plugin.channelManager().getChannel("GLOBAL"));
             ChatUtils.chat(player, "&a&lChat &8» &aChannel set to &7" + plugin.channelManager().getChannel("GLOBAL").getName() + "&a.");
         }
         else {
-            plugin.channelManager().setChannel(player, plugin.channelManager().getChannel("STAFF"));
-            ChatUtils.chat(player, "&a&lChat &8» &aChannel set to &7" + plugin.channelManager().getChannel("STAFF").getName() + "&a.");
+            plugin.channelManager().setChannel(player, plugin.channelManager().getChannel("ADMIN"));
+            ChatUtils.chat(player, "&a&lChat &8» &aChannel set to &7" + plugin.channelManager().getChannel("ADMIN").getName() + "&a.");
         }
     }
 }

@@ -47,6 +47,20 @@ public class ChannelManager {
     }
 
     /**
+     * Gets the channel the player is currently in.
+     * @param player Player to get channel of.
+     * @return The channel they are using.
+     */
+    public Channel getChannel(ProxiedPlayer player) {
+        if(players.containsKey(player.getUniqueId())) {
+            return players.get(player.getUniqueId());
+        }
+        else {
+            return channels.get(0);
+        }
+    }
+
+    /**
      * Processes a chat message sent by a player.
      * @param player Player sending the chat message.
      * @param message Message being sent.
