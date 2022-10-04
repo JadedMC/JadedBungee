@@ -273,12 +273,8 @@ public class PartyCMD extends Command {
 
         ChatUtils.chat(target, "&8&m+-----------------------***-----------------------+");
         ChatUtils.chat(target, "&aYou have been invited to join &f" + player.getName() + "&a's party!");
-        /*
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tellraw " + target.getName() +
-                " [{\"text\":\"[Accept]\",\"bold\":true,\"color\":\"green\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party accept "  + player.getName() + "\"}},{\"text\":\" / \",\"color\":\"gray\"},{\"text\":\"[Decline]\",\"bold\":true,\"color\":\"red\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/party decline " +  player.getName() + "\"}}]");
-         */
-        ChatUtils.chat(player, "&a/party accept " + player.getName());
-        ChatUtils.chat(player, "&c/party deny " + player.getName());
+        ChatUtils.chat(target, "&a/party accept " + player.getName());
+        ChatUtils.chat(target, "&c/party deny " + player.getName());
         ChatUtils.chat(target, "&8&m+-----------------------***-----------------------+");
         party.sendMessage("&a&lParty &8» &f" + target.getName() + " &ahas been invited to the party.");
     }
