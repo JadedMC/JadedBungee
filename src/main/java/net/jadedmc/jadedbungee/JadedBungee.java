@@ -5,6 +5,10 @@ import net.jadedmc.jadedbungee.features.chat.commands.AdminChatCMD;
 import net.jadedmc.jadedbungee.features.chat.commands.ChatCMD;
 import net.jadedmc.jadedbungee.features.chat.commands.PartyChatCMD;
 import net.jadedmc.jadedbungee.features.chat.commands.StaffChatCMD;
+import net.jadedmc.jadedbungee.features.messaging.MessageManager;
+import net.jadedmc.jadedbungee.features.messaging.commands.MessageCMD;
+import net.jadedmc.jadedbungee.features.messaging.commands.ReplyCMD;
+import net.jadedmc.jadedbungee.features.messaging.commands.SocialSpyCMD;
 import net.jadedmc.jadedbungee.features.party.PartyManager;
 import net.jadedmc.jadedbungee.features.party.commands.PartyCMD;
 import net.jadedmc.jadedbungee.listeners.ChatListener;
@@ -16,6 +20,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 public final class JadedBungee extends Plugin {
     private ChannelManager channelManager;
     private CustomPlayerManager customPlayerManager;
+    private MessageManager messageManager;
     private MySQL mySQL;
     private PartyManager partyManager;
     private SettingsManager settingsManager;
@@ -31,6 +36,7 @@ public final class JadedBungee extends Plugin {
         channelManager = new ChannelManager(this);
         customPlayerManager = new CustomPlayerManager(this);
         partyManager = new PartyManager(this);
+        messageManager = new MessageManager();
 
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerDisconnectListener(this));
@@ -41,6 +47,11 @@ public final class JadedBungee extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new PartyCMD(this));
         getProxy().getPluginManager().registerCommand(this, new PartyChatCMD(this));
         getProxy().getPluginManager().registerCommand(this, new StaffChatCMD(this));
+
+        // Message Commands
+        getProxy().getPluginManager().registerCommand(this, new MessageCMD(this));
+        getProxy().getPluginManager().registerCommand(this, new ReplyCMD(this));
+        getProxy().getPluginManager().registerCommand(this, new SocialSpyCMD(this));
     }
 
     @Override
@@ -54,6 +65,10 @@ public final class JadedBungee extends Plugin {
 
     public CustomPlayerManager customPlayerManager() {
         return customPlayerManager;
+    }
+
+    public MessageManager messageManager() {
+        return messageManager;
     }
 
     public MySQL mySQL() {
