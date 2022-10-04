@@ -4,15 +4,15 @@ import net.jadedmc.jadedbungee.utils.ChatUtils;
 import net.md_5.bungee.api.ChatColor;
 
 public enum Rank {
-    OWNER("&c&lOwner", ChatColor.RED),
-    ADMIN("", ChatColor.RED),
-    MOD("", ChatColor.GOLD),
-    TRIAL("", ChatColor.GOLD),
-    BUILDER("", ChatColor.YELLOW),
-    DEVELOPER("", ChatColor.YELLOW),
-    JADED("", ChatColor.GREEN),
-    SAPPHIRE("", ChatColor.BLUE),
-    AMETHYST("", ChatColor.DARK_PURPLE),
+    OWNER("&c&lOwner ", ChatColor.RED),
+    ADMIN("&c&lAdmin ", ChatColor.RED),
+    MOD("&6&lMod ", ChatColor.GOLD),
+    TRIAL("&6&lTrial ", ChatColor.GOLD),
+    BUILDER("&e&lBuilder ", ChatColor.YELLOW),
+    DEVELOPER("&e&lDeveloper ", ChatColor.YELLOW),
+    JADED("&a&lJaded ", ChatColor.GREEN),
+    SAPPHIRE("&9&lSapphire ", ChatColor.BLUE),
+    AMETHYST("&5&lAmethyst ", ChatColor.DARK_PURPLE),
     DEFAULT("", ChatColor.GRAY);
 
     private final String prefix;

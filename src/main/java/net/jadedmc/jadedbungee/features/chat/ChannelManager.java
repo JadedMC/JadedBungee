@@ -22,7 +22,7 @@ public class ChannelManager {
      */
     public ChannelManager(JadedBungee plugin) {
         channels.add(new GlobalChannel());
-        channels.add(new PartyChannel());
+        channels.add(new PartyChannel(plugin));
         channels.add(new StaffChannel(plugin));
         channels.add(new AdminChannel(plugin));
     }

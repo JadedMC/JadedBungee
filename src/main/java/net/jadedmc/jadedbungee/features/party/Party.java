@@ -39,6 +39,22 @@ public class Party {
     }
 
     /**
+     * Get all current invites.
+     * @return All current invites.
+     */
+    public Collection<ProxiedPlayer> getInvites() {
+        Collection<ProxiedPlayer> partyInvites = new ArrayList<>();
+
+        invites.keySet().forEach(uuid -> {
+            if(plugin.getProxy().getPlayer(uuid) != null) {
+                partyInvites.add(plugin.getProxy().getPlayer(uuid));
+            }
+        });
+
+        return partyInvites;
+    }
+
+    /**
      * Gets the leader of the party.
      * @return Party leader.
      */
@@ -109,6 +125,14 @@ public class Party {
             sendMessage("&a&lParty &8» &f" + invites.get(player.getUniqueId()) + "&a's invite has expired.");
             invites.remove(player.getUniqueId());
         }, 60, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Removes the invite to a player.
+     * @param player Player to remove invite to.
+     */
+    public void removeInvite(ProxiedPlayer player) {
+        invites.remove(player.getUniqueId());
     }
 
     /**

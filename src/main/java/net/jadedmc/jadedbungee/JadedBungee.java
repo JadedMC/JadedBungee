@@ -3,8 +3,10 @@ package net.jadedmc.jadedbungee;
 import net.jadedmc.jadedbungee.features.chat.ChannelManager;
 import net.jadedmc.jadedbungee.features.chat.commands.AdminChatCMD;
 import net.jadedmc.jadedbungee.features.chat.commands.ChatCMD;
+import net.jadedmc.jadedbungee.features.chat.commands.PartyChatCMD;
 import net.jadedmc.jadedbungee.features.chat.commands.StaffChatCMD;
 import net.jadedmc.jadedbungee.features.party.PartyManager;
+import net.jadedmc.jadedbungee.features.party.commands.PartyCMD;
 import net.jadedmc.jadedbungee.listeners.ChatListener;
 import net.jadedmc.jadedbungee.listeners.PlayerDisconnectListener;
 import net.jadedmc.jadedbungee.listeners.PostLoginListener;
@@ -36,6 +38,8 @@ public final class JadedBungee extends Plugin {
 
         getProxy().getPluginManager().registerCommand(this, new AdminChatCMD(this));
         getProxy().getPluginManager().registerCommand(this, new ChatCMD(this));
+        getProxy().getPluginManager().registerCommand(this, new PartyCMD(this));
+        getProxy().getPluginManager().registerCommand(this, new PartyChatCMD(this));
         getProxy().getPluginManager().registerCommand(this, new StaffChatCMD(this));
     }
 
