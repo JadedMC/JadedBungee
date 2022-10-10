@@ -102,21 +102,14 @@ public class MySQL {
                     ");");
             player_info.execute();
 
-            PreparedStatement player_ips = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_ips (" +
+            PreparedStatement player_logins = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_logins (" +
                     "uuid VARCHAR(36)," +
+                    "username VARCHAR(16)," +
                     "ip VARCHAR(16)," +
                     "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
                     "PRIMARY KEY (time)" +
                     ");");
-            player_ips.execute();
-
-            PreparedStatement player_usernames = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_usernames (" +
-                    "uuid VARCHAR(36)," +
-                    "username VARCHAR(16)," +
-                    "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                    "PRIMARY KEY (time)" +
-                    ");");
-            player_usernames.execute();
+            player_logins.execute();
 
             // Prevents losing connection to MySQL.
             plugin.getProxy().getScheduler().schedule(plugin, () -> {

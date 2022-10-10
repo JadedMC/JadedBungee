@@ -31,29 +31,18 @@ public class CustomPlayer {
                     }
                 }
 
-                // player_ips
+                // player_logins
                 {
-                    PreparedStatement insertStatement = plugin.mySQL().getConnection().prepareStatement("INSERT INTO player_ips (uuid,ip) VALUES (?,?)");
-                    insertStatement.setString(1, player.getUniqueId().toString());
-                    insertStatement.setString(2, player.getAddress().getHostString());
-                    insertStatement.executeUpdate();
-
-                    PreparedStatement updateStatement = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET ip = ? WHERE uuid = ?");
-                    updateStatement.setString(1, player.getUniqueId().toString());
-                    updateStatement.setString(2, player.getAddress().getHostString());
-                    updateStatement.executeUpdate();
-                }
-
-                // player_usernames
-                {
-                    PreparedStatement insertStatement = plugin.mySQL().getConnection().prepareStatement("INSERT INTO player_usernames (uuid,username) VALUES (?,?)");
+                    PreparedStatement insertStatement = plugin.mySQL().getConnection().prepareStatement("INSERT INTO player_logins (uuid,username,ip) VALUES (?,?,?)");
                     insertStatement.setString(1, player.getUniqueId().toString());
                     insertStatement.setString(2, player.getName());
+                    insertStatement.setString(3, player.getAddress().getHostString());
                     insertStatement.executeUpdate();
 
-                    PreparedStatement updateStatement = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET username = ? WHERE uuid = ?");
-                    updateStatement.setString(1, player.getName());
-                    updateStatement.setString(2, player.getUniqueId().toString());
+                    PreparedStatement updateStatement = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET username = ?, ip = ? WHERE uuid = ?");
+                    updateStatement.setString(1, player.getUniqueId().toString());
+                    updateStatement.setString(2, player.getName());
+                    updateStatement.setString(3, player.getAddress().getHostString());
                     updateStatement.executeUpdate();
                 }
 
