@@ -78,11 +78,35 @@ public class MySQL {
                 connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&useSSL=false&characterEncoding=utf8", username, password);
             }
 
+            PreparedStatement chat_logs = connection.prepareStatement("CREATE TABLE IF NOT EXISTS chat_logs (" +
+                    "id INT AUTO_INCREMENT," +
+                    "server VARCHAR(45) DEFAULT 'null'," +
+                    "channel VARCHAR(45) DEFAULT 'global'," +
+                    "uuid VARCHAR(45)," +
+                    "username VARCHAR(16)," +
+                    "message VARCHAR(256)," +
+                    "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                    "PRIMARY KEY (id)" +
+                    ");");
+            chat_logs.execute();
+
+            PreparedStatement player_info = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_info (" +
+                    "uuid VARCHAR(36)," +
+                    "username VARCHAR(16)," +
+                    "ip VARCHAR(16)," +
+                    "level INT DEFAULT 1," +
+                    "experience INT DEFAULT 1," +
+                    "firstOnline TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                    "lastOnline TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                    "PRIMARY KEY (uuid)" +
+                    ");");
+            player_info.execute();
+
             PreparedStatement player_ips = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_ips (" +
                     "uuid VARCHAR(36)," +
                     "ip VARCHAR(16)," +
                     "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                    "PRIMARY KEY (uuid)" +
+                    "PRIMARY KEY (time)" +
                     ");");
             player_ips.execute();
 
@@ -90,7 +114,7 @@ public class MySQL {
                     "uuid VARCHAR(36)," +
                     "username VARCHAR(16)," +
                     "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                    "PRIMARY KEY (uuid)" +
+                    "PRIMARY KEY (time)" +
                     ");");
             player_usernames.execute();
 

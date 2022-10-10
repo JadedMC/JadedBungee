@@ -34,53 +34,5 @@ public class PostLoginListener implements Listener {
         ProxiedPlayer player = event.getPlayer();
 
         plugin.customPlayerManager().addPlayer(player);
-
-        String uuid = player.getUniqueId().toString();
-        String ip = player.getAddress().getHostString();
-        addNameHistory(player);
-        addIPHistory(uuid, ip);
-    }
-
-    /**
-     * Add to the player's ip history.
-     * @param uuid UUID of the player.
-     * @param ip IP of the player.
-     */
-    private void addIPHistory(String uuid, String ip) {
-        try {
-            PreparedStatement statement1 = plugin.mySQL().getConnection().prepareStatement("INSERT INTO player_ips (uuid,ip) VALUES (?,?)");
-            statement1.setString(1, uuid);
-            statement1.setString(2, ip);
-            statement1.executeUpdate();
-
-            PreparedStatement statement2 = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET ip = ? WHERE uuid = ?");
-            statement2.setString(1, ip);
-            statement2.setString(2, uuid);
-            statement2.executeUpdate();
-        }
-        catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    /**
-     * Add to the player's username history.
-     * @param player Player to add to.
-     */
-    private void addNameHistory(ProxiedPlayer player) {
-        try {
-            PreparedStatement statement1 = plugin.mySQL().getConnection().prepareStatement("INSERT INTO player_usernames (uuid,username) VALUES (?,?)");
-            statement1.setString(1, player.getUniqueId().toString());
-            statement1.setString(2, player.getName());
-            statement1.executeUpdate();
-
-            PreparedStatement statement2 = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET username = ? WHERE uuid = ?");
-            statement2.setString(1, player.getName());
-            statement2.setString(2, player.getUniqueId().toString());
-            statement2.executeUpdate();
-        }
-        catch (SQLException exception) {
-            exception.printStackTrace();
-        }
     }
 }

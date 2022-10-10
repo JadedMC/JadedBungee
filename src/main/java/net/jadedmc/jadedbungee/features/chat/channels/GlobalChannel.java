@@ -1,5 +1,6 @@
 package net.jadedmc.jadedbungee.features.chat.channels;
 
+import net.jadedmc.jadedbungee.JadedBungee;
 import net.jadedmc.jadedbungee.features.chat.Channel;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -7,6 +8,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
  * The default chat channel visible to everyone.
  */
 public class GlobalChannel extends Channel {
+    private final JadedBungee plugin;
 
     /**
      * Creates the channel.
@@ -22,8 +24,9 @@ public class GlobalChannel extends Channel {
      *   - pub
      *   - all
      */
-    public GlobalChannel() {
+    public GlobalChannel(JadedBungee plugin) {
         super("GLOBAL", "", "g", "general", "leave", "none", "exit", "public", "pub", "all");
+        this.plugin = plugin;
     }
 
     /**
@@ -34,6 +37,8 @@ public class GlobalChannel extends Channel {
      */
     @Override
     public boolean chat(ProxiedPlayer player, String message) {
+
+        plugin.channelManager().log(this.getName(), player, message);
         return false;
     }
 }

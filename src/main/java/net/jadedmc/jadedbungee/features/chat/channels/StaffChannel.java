@@ -47,6 +47,7 @@ public class StaffChannel extends Channel {
             }
         }
 
+        plugin.channelManager().log(this.getName(), player, message);
         return true;
     }
 }

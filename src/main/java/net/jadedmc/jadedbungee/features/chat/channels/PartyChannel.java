@@ -41,6 +41,7 @@ public class PartyChannel extends Channel {
         CustomPlayer customPlayer = plugin.customPlayerManager().getPlayer(player);
         plugin.partyManager().getParty(player).sendMessage("&7[&aParty&7] " + customPlayer.getRank().getPrefix() + "&7" + player.getName() + " &8» &a" + message);
 
+        plugin.channelManager().log(this.getName(), player, message);
         return true;
     }
 }

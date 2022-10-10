@@ -7,12 +7,15 @@ import net.jadedmc.jadedbungee.features.chat.channels.PartyChannel;
 import net.jadedmc.jadedbungee.features.chat.channels.StaffChannel;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
  * This class registers Channels and manages what players are using them.
  */
 public class ChannelManager {
+    private final JadedBungee plugin;
     private final List<Channel> channels = new ArrayList<>();
     private final Map<UUID, Channel> players = new HashMap<>();
 
@@ -21,7 +24,8 @@ public class ChannelManager {
      * @param plugin Instance of the plugin.
      */
     public ChannelManager(JadedBungee plugin) {
-        channels.add(new GlobalChannel());
+        this.plugin = plugin;
+        channels.add(new GlobalChannel(plugin));
         channels.add(new PartyChannel(plugin));
         channels.add(new StaffChannel(plugin));
         channels.add(new AdminChannel(plugin));
@@ -73,6 +77,27 @@ public class ChannelManager {
         else {
             return channels.get(0).chat(player, message);
         }
+    }
+
+    public void log(String channel, ProxiedPlayer player, String message) {
+        String name = player.getName();
+        String uuid = player.getUniqueId().toString();
+        String server = player.getServer().getInfo().getName();
+
+        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
+            try {
+                PreparedStatement statement = plugin.mySQL().getConnection().prepareStatement("INSERT INTO chat_logs (server,channel,uuid,username,message) VALUES (?,?,?,?,?)");
+                statement.setString(1, server);
+                statement.setString(2, channel);
+                statement.setString(3, uuid);
+                statement.setString(4, name);
+                statement.setString(5, message);
+                statement.executeUpdate();
+            }
+            catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        });
     }
 
     /**
