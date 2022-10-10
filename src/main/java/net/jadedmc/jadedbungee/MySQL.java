@@ -90,6 +90,17 @@ public class MySQL {
                     ");");
             chat_logs.execute();
 
+            PreparedStatement command_logs = connection.prepareStatement("CREATE TABLE IF NOT EXISTS command_logs (" +
+                    "id INT AUTO_INCREMENT," +
+                    "server VARCHAR(45) DEFAULT 'null'," +
+                    "uuid VARCHAR(45)," +
+                    "username VARCHAR(16)," +
+                    "command VARCHAR(256)," +
+                    "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                    "PRIMARY KEY (id)" +
+                    ");");
+            command_logs.execute();
+
             PreparedStatement player_info = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_info (" +
                     "uuid VARCHAR(36)," +
                     "username VARCHAR(16)," +
