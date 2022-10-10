@@ -2,6 +2,7 @@ package net.jadedmc.jadedbungee;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
@@ -76,6 +77,22 @@ public class MySQL {
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&useSSL=false&characterEncoding=utf8", username, password);
             }
+
+            PreparedStatement player_ips = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_ips (" +
+                    "uuid VARCHAR(36)," +
+                    "ip VARCHAR(16)," +
+                    "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                    "PRIMARY KEY (uuid)" +
+                    ");");
+            player_ips.execute();
+
+            PreparedStatement player_usernames = connection.prepareStatement("CREATE TABLE IF NOT EXISTS player_usernames (" +
+                    "uuid VARCHAR(36)," +
+                    "username VARCHAR(16)," +
+                    "time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                    "PRIMARY KEY (uuid)" +
+                    ");");
+            player_usernames.execute();
 
             // Prevents losing connection to MySQL.
             plugin.getProxy().getScheduler().schedule(plugin, () -> {
