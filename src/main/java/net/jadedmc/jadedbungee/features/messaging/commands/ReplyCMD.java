@@ -80,5 +80,8 @@ public class ReplyCMD extends Command {
 
         // Creates a conversation between the two players so /reply works.
         plugin.messageManager().setReplyTarget(player, target);
+
+        // Logs the message
+        plugin.channelManager().log("PRIVATE", player, "To " + target.getName() + ": " + message);
     }
 }
