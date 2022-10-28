@@ -5,6 +5,8 @@ import net.jadedmc.jadedbungee.features.chat.channels.AdminChannel;
 import net.jadedmc.jadedbungee.features.chat.channels.GlobalChannel;
 import net.jadedmc.jadedbungee.features.chat.channels.PartyChannel;
 import net.jadedmc.jadedbungee.features.chat.channels.StaffChannel;
+import net.jadedmc.jadedbungee.features.chat.filter.FilterManager;
+import net.jadedmc.jadedbungee.utils.ChatUtils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.sql.PreparedStatement;
@@ -18,6 +20,7 @@ public class ChannelManager {
     private final JadedBungee plugin;
     private final List<Channel> channels = new ArrayList<>();
     private final Map<UUID, Channel> players = new HashMap<>();
+    private final FilterManager filterManager = new FilterManager();
 
     /**
      * Creates the Channel Manager.
@@ -65,6 +68,14 @@ public class ChannelManager {
     }
 
     /**
+     * Gets the current filter manager, which process chat messages to filter them before sending them.
+     * @return Filter manager.
+     */
+    public FilterManager getFilterManager() {
+        return filterManager;
+    }
+
+    /**
      * Processes a chat message sent by a player.
      * @param player Player sending the chat message.
      * @param message Message being sent.
@@ -79,7 +90,24 @@ public class ChannelManager {
         }
     }
 
+    /**
+     * Logs a chat message to the database.
+     * @param channel Channel the message was sent in.
+     * @param player The player who sent the message.
+     * @param message Message the player sent.
+     */
     public void log(String channel, ProxiedPlayer player, String message) {
+        log(channel, player, message, false);
+    }
+
+    /**
+     * Logs a chat message to the database.
+     * @param channel Channel the message was sent in.
+     * @param player The player who sent the message.
+     * @param message Message the player sent.
+     * @param filtered Whether the message was filtered.
+     */
+    public void log(String channel, ProxiedPlayer player, String message, boolean filtered) {
         String name = player.getName();
         String uuid = player.getUniqueId().toString();
         String server = player.getServer().getInfo().getName();
@@ -91,7 +119,14 @@ public class ChannelManager {
                 statement.setString(2, channel);
                 statement.setString(3, uuid);
                 statement.setString(4, name);
-                statement.setString(5, message);
+
+                if(filtered) {
+                    statement.setString(5, "(filtered) " + message);
+                }
+                else {
+                    statement.setString(5, message);
+                }
+
                 statement.executeUpdate();
             }
             catch (SQLException exception) {

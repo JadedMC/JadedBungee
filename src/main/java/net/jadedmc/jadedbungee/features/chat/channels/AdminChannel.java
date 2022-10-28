@@ -7,6 +7,9 @@ import net.jadedmc.jadedbungee.utils.ChatUtils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 /**
  * A chat channel only visible to administrators.
  */
@@ -22,31 +25,42 @@ public class AdminChannel extends Channel {
      * @param plugin Instance of the plugin.
      */
     public AdminChannel(JadedBungee plugin) {
-        super("ADMIN", "admin.chat", "a");
+        super(plugin, "ADMIN", "admin.chat", "a");
 
         this.plugin = plugin;
     }
 
     /**
-     * Processes a chat message sent to the channel.
-     * @param player Player sending the message.
-     * @param message Message being sent.
-     * @return true, which prevents the chat message from being passed to sub-servers.
+     * Formats a message sent to this channel.
+     * @param player Player who sent the message.
+     * @param message Message being formatted.
+     * @return Formatted message.
      */
     @Override
-    public boolean chat(ProxiedPlayer player, String message) {
+    public String formatMessage(ProxiedPlayer player, String message) {
         CustomPlayer customPlayer = plugin.customPlayerManager().getPlayer(player);
 
         String rank  = customPlayer.getRank().toString();
         rank = rank.substring(0,1).toUpperCase() + rank.substring(1).toLowerCase();
 
-        for(ProxiedPlayer viewer : ProxyServer.getInstance().getPlayers()) {
+        return "&4&l(&6&lAdmin&4&l) &6&l" + rank + " &f" + player.getDisplayName() + " &8» &6" + message;
+    }
+
+    /**
+     * Gets the list of players who should receive a message from a player.
+     * @param player Player to get viewers of.
+     * @return All administrators who can see the message.
+     */
+    @Override
+    public Collection<ProxiedPlayer> getViewers(ProxiedPlayer player) {
+        Collection<ProxiedPlayer> viewers = new HashSet<>();
+
+        for(ProxiedPlayer viewer : plugin.getProxy().getPlayers()) {
             if(viewer.hasPermission("admin.chat")) {
-                ChatUtils.chat(viewer, "&4&l(&6&lAdmin&4&l) &6&l" + rank + " &f" + player.getDisplayName() + " &8» &6" + message);
+                viewers.add(viewer);
             }
         }
 
-        plugin.channelManager().log(this.getName(), player, message);
-        return true;
+        return viewers;
     }
 }

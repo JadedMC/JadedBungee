@@ -6,6 +6,9 @@ import net.jadedmc.jadedbungee.player.CustomPlayer;
 import net.jadedmc.jadedbungee.utils.ChatUtils;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 /**
  * A chat channel only visible to members of a party.
  */
@@ -20,28 +23,35 @@ public class PartyChannel extends Channel {
      *   - p
      */
     public PartyChannel(JadedBungee plugin) {
-        super("PARTY", "", "p");
+        super(plugin, "PARTY", "", "p");
         this.plugin = plugin;
     }
 
     /**
-     * Processes a chat message sent to the channel.
-     * @param player Player sending the message.
-     * @param message Message being sent.
-     * @return false, passing the message through to the sub-server.
+     * Formats a message sent to this channel.
+     * @param player Player who sent the message.
+     * @param message Message being formatted.
+     * @return Formatted message.
      */
     @Override
-    public boolean chat(ProxiedPlayer player, String message) {
+    public String formatMessage(ProxiedPlayer player, String message) {
+        CustomPlayer customPlayer = plugin.customPlayerManager().getPlayer(player);
+        return "&7[&aParty&7] " + customPlayer.getRank().getPrefix() + "&7" + player.getName() + " &8» &a" + message;
+    }
+
+    /**
+     * Gets the list of players who should receive a message from a player.
+     * @param player Player to get viewers of.
+     * @return All administrators who can see the message.
+     */
+    @Override
+    public Collection<ProxiedPlayer> getViewers(ProxiedPlayer player) {
+        Collection<ProxiedPlayer> viewers = new HashSet<>();
+
         if(plugin.partyManager().getParty(player) == null) {
-            ChatUtils.chat(player, "&c&lError &8» &cYou are not in a party!");
-            plugin.channelManager().setChannel(player, plugin.channelManager().getChannel("GLOBAL"));
-            return true;
+            return viewers;
         }
 
-        CustomPlayer customPlayer = plugin.customPlayerManager().getPlayer(player);
-        plugin.partyManager().getParty(player).sendMessage("&7[&aParty&7] " + customPlayer.getRank().getPrefix() + "&7" + player.getName() + " &8» &a" + message);
-
-        plugin.channelManager().log(this.getName(), player, message);
-        return true;
+        return plugin.partyManager().getParty(player).getMembers();
     }
 }
