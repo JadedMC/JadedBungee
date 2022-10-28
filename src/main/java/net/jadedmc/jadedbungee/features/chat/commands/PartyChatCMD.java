@@ -10,7 +10,7 @@ public class PartyChatCMD extends Command {
     private final JadedBungee plugin;
 
     public PartyChatCMD(JadedBungee plugin) {
-        super("partychat", "", "pc");
+        super("bpartychat", "", "bpc");
         this.plugin = plugin;
     }
 
