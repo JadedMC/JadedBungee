@@ -80,12 +80,12 @@ public abstract class Channel {
     public boolean chat(ProxiedPlayer player, String message) {
         // Exits if the message should be handled by the sub server.
         if(passToSubServer) {
-            return true;
+            return false;
         }
 
         // Processes the chat filter.
         if(!passesFilter(player, message)) {
-            return false;
+            return true;
         }
 
         // Displays the chat message to each viewer.
@@ -95,7 +95,7 @@ public abstract class Channel {
 
         // Logs the chat message.
         plugin.channelManager().log(this.getName(), player, message);
-        return passToSubServer;
+        return !passToSubServer;
     }
 
     /**
