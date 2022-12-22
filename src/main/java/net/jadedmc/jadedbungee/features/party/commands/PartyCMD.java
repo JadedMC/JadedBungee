@@ -72,6 +72,9 @@ public class PartyCMD extends Command {
             case "kick":
                 kickCMD(player, args);
                 break;
+            case "summon":
+                summonCMD(player);
+                break;
             default:
                 helpCMD(player);
                 break;
@@ -438,6 +441,36 @@ public class PartyCMD extends Command {
             party.setRank(player, PartyRank.MODERATOR);
             party.setRank(target, PartyRank.LEADER);
             party.sendMessage("&a&lParty &8» &f" + target.getName() + " &ahas been promoted to party leader.");
+        }
+    }
+
+    /**
+     * Summons all members of the party to the leader's server.
+     * @param player Player using the command.
+     */
+    private void summonCMD(ProxiedPlayer player) {
+        // Makes sure the player is in a party.
+        if(plugin.partyManager().getParty(player) == null) {
+            ChatUtils.chat(player, "&cError &8» &cYou are not in a party! /party create.");
+            return;
+        }
+
+        // Gets the player's party.
+        Party party = plugin.partyManager().getParty(player);
+
+        // Makes sure they have permission.
+        if(party.getRank(player) != PartyRank.LEADER) {
+            ChatUtils.chat(player, "&cError &8» &cOnly the party leader can summon players!");
+            return;
+        }
+
+        party.sendMessage("&a&lParty &8» &aYou have been summoned to &f" + player.getName() + "&a's server.");
+        for(ProxiedPlayer member : party.getMembers()) {
+            if(member.equals(player)) {
+                continue;
+            }
+
+            member.connect(player.getServer().getInfo());
         }
     }
 }
