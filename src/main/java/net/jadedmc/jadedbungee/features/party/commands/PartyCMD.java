@@ -22,7 +22,7 @@ public class PartyCMD extends Command {
      * Executes the command.
      */
     public PartyCMD(JadedBungee plugin) {
-        super("bparty", "", "bp");
+        super("party", "", "p");
         this.plugin = plugin;
     }
 
