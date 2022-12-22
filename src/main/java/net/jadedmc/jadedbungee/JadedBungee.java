@@ -1,5 +1,7 @@
 package net.jadedmc.jadedbungee;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import net.jadedmc.jadedbungee.features.chat.ChannelManager;
 import net.jadedmc.jadedbungee.features.chat.commands.AdminChatCMD;
 import net.jadedmc.jadedbungee.features.chat.commands.ChatCMD;
@@ -14,8 +16,13 @@ import net.jadedmc.jadedbungee.features.party.commands.PartyCMD;
 import net.jadedmc.jadedbungee.listeners.ChatListener;
 import net.jadedmc.jadedbungee.listeners.PlayerDisconnectListener;
 import net.jadedmc.jadedbungee.listeners.PostLoginListener;
+import net.jadedmc.jadedbungee.listeners.ServerSwitchListener;
 import net.jadedmc.jadedbungee.player.CustomPlayerManager;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
+
+import java.util.Collection;
 
 public final class JadedBungee extends Plugin {
     private ChannelManager channelManager;
@@ -41,6 +48,7 @@ public final class JadedBungee extends Plugin {
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerDisconnectListener(this));
         getProxy().getPluginManager().registerListener(this, new PostLoginListener(this));
+        getProxy().getPluginManager().registerListener(this, new ServerSwitchListener(this));
 
         getProxy().getPluginManager().registerCommand(this, new AdminChatCMD(this));
         getProxy().getPluginManager().registerCommand(this, new ChatCMD(this));
@@ -52,11 +60,23 @@ public final class JadedBungee extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new MessageCMD(this));
         getProxy().getPluginManager().registerCommand(this, new ReplyCMD(this));
         getProxy().getPluginManager().registerCommand(this, new SocialSpyCMD(this));
+
+        // Plugin Messaging Channel
+        getProxy().registerChannel("jadedmc:party");
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    public void sendCustomData(ProxiedPlayer player, String subChannel, String message) {
+        Collection<ProxiedPlayer> networkPlayers = ProxyServer.getInstance().getPlayers();
+
+        if (networkPlayers == null || networkPlayers.isEmpty()) {
+            return;
+        }
+
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF(subChannel);
+        out.writeUTF(message);
+
+        player.getServer().getInfo().sendData( "jadedmc:party", out.toByteArray() );
     }
 
     public ChannelManager channelManager() {

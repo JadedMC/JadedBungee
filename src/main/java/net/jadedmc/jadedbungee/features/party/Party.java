@@ -36,6 +36,8 @@ public class Party {
     public void addPlayer(ProxiedPlayer player) {
         members.put(player.getUniqueId(), PartyRank.MEMBER);
         invites.remove(player.getUniqueId());
+
+        syncData();
     }
 
     /**
@@ -146,6 +148,7 @@ public class Party {
         }
 
         members.remove(player.getUniqueId());
+        syncData();
     }
 
     /**
@@ -165,5 +168,54 @@ public class Party {
      */
     public void setRank(ProxiedPlayer player, PartyRank rank) {
         members.put(player.getUniqueId(), rank);
+    }
+
+    public void syncData() {
+        String message = uuid + "~" + getLeader().getUniqueId();
+
+        if(getMembers().size() > 1) {
+            message += "~";
+
+            int i = 0;
+            for(ProxiedPlayer player : getMembers()) {
+                if(getRank(player) == PartyRank.LEADER) {
+                    continue;
+                }
+
+                message += player.getUniqueId().toString();
+                i++;
+
+                if(i < getMembers().size() - 1) {
+                    message += ":";
+                }
+            }
+        }
+
+        String finalMessage = message;
+        getMembers().forEach(player -> plugin.sendCustomData(player, "sync", finalMessage));
+    }
+
+    public void syncData(ProxiedPlayer player) {
+        String message = uuid + "~" + getLeader().getUniqueId();
+
+        if(getMembers().size() > 1) {
+            message += "~";
+
+            int i = 0;
+            for(ProxiedPlayer member : getMembers()) {
+                if(getRank(member) == PartyRank.LEADER) {
+                    continue;
+                }
+
+                message += member.getUniqueId().toString();
+                i++;
+
+                if(i < getMembers().size() - 1) {
+                    message += ":";
+                }
+            }
+        }
+
+        plugin.sendCustomData(player, "sync", message);
     }
 }

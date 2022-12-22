@@ -29,6 +29,7 @@ public class PartyManager {
     public Party createParty(ProxiedPlayer leader) {
         Party party = new Party(plugin, leader);
         parties.add(party);
+        party.syncData();
         return party;
     }
 
@@ -38,6 +39,11 @@ public class PartyManager {
      */
     public void disbandParty(Party party) {
         getParties().remove(party);
+
+        // Make sure spigot servers know the party was disbanded.
+        for(ProxiedPlayer player : party.getMembers()) {
+            plugin.sendCustomData(player, "disband", party.getUUID().toString());
+        }
     }
 
     /**
