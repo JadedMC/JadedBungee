@@ -6,6 +6,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class CustomPlayer {
     private final JadedBungee plugin;
@@ -22,7 +23,14 @@ public class CustomPlayer {
                     getStatement.setString(1, player.getUniqueId().toString());
                     ResultSet results = getStatement.executeQuery();
 
-                    if(!results.next()) {
+                    if(results.next()) {
+                        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                        PreparedStatement statement3 = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET lastOnline = ? WHERE uuid = ?");
+                        statement3.setTimestamp(1, timestamp);
+                        statement3.setString(2, player.getUniqueId().toString());
+                        statement3.executeUpdate();
+                    }
+                    else {
                         PreparedStatement insertStatement = plugin.mySQL().getConnection().prepareStatement("INSERT INTO player_info (uuid,username,ip) VALUES (?,?,?)");
                         insertStatement.setString(1, player.getUniqueId().toString());
                         insertStatement.setString(2, player.getName());
