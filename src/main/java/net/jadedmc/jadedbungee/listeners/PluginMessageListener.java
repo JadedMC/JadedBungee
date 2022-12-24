@@ -34,6 +34,10 @@ public class PluginMessageListener implements Listener {
     public void onMessage(PluginMessageEvent event) throws IOException {
         String tag = event.getTag();
 
+        if(!tag.contains("jadedmc")) {
+            return;
+        }
+
         // Used to accept the message from the tournament server.
         DataInputStream input = new DataInputStream(new ByteArrayInputStream(event.getData()));
         String subChannel = input.readUTF();
