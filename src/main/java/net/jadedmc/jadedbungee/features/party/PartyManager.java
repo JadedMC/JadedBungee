@@ -63,6 +63,21 @@ public class PartyManager {
     }
 
     /**
+     * Get a party based off it's uuid.
+     * @param uuid UUID of the party.
+     * @return Party object.
+     */
+    public Party getParty(String uuid) {
+        for(Party party : getParties()) {
+            if(party.getUUID().toString().equalsIgnoreCase(uuid)) {
+                return party;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Get all current parties.
      * @return All current parties.
      */

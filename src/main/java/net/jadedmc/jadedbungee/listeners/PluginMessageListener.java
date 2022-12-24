@@ -1,6 +1,8 @@
 package net.jadedmc.jadedbungee.listeners;
 
 import net.jadedmc.jadedbungee.JadedBungee;
+import net.jadedmc.jadedbungee.features.party.Party;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -11,8 +13,6 @@ import java.io.IOException;
 
 /**
  * This listens to the PluginMessageEvent event, which is called every time a plugin sends a message to bungeecord.
- * We use this to have the tournament plugin tell bungeecord when an event is created in order to announce it to all
- * players on the network.
  */
 public class PluginMessageListener implements Listener {
     private final JadedBungee plugin;
@@ -31,32 +31,36 @@ public class PluginMessageListener implements Listener {
      * @param event PluginMessageEvent.
      */
     @EventHandler
-    public void onMessage(PluginMessageEvent event) {
-        String[] message;
+    public void onMessage(PluginMessageEvent event) throws IOException {
+        String tag = event.getTag();
 
         // Used to accept the message from the tournament server.
         DataInputStream input = new DataInputStream(new ByteArrayInputStream(event.getData()));
-        try {
-            // Reads the message and splits it into an array.
-            message = input.readUTF().split(":");
-        }
-        catch (IOException exception) {
-            exception.printStackTrace();
-            message = null;
-        }
+        String subChannel = input.readUTF();
 
-        if(message == null || message.length == 0) {
-            return;
-        }
+        switch (tag.toLowerCase()) {
+            case "jadedmc:party" -> {
+                if(subChannel.equalsIgnoreCase("summon")) {
+                    String uuid = input.readUTF();
 
-        switch (event.getTag().toLowerCase()) {
+                    System.out.println("[Party Summon] " + uuid);
 
-            case "tournament" -> {
+                    Party party = plugin.partyManager().getParty(uuid);
 
-            }
+                    if(party == null) {
+                        return;
+                    }
 
-            case "party" -> {
+                    ProxiedPlayer leader = party.getLeader();
 
+                    for(ProxiedPlayer player : party.getMembers()) {
+                        if(player.equals(leader)) {
+                            continue;
+                        }
+
+                        player.connect(leader.getServer().getInfo());
+                    }
+                }
             }
         }
     }

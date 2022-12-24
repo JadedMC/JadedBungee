@@ -13,10 +13,7 @@ import net.jadedmc.jadedbungee.features.messaging.commands.ReplyCMD;
 import net.jadedmc.jadedbungee.features.messaging.commands.SocialSpyCMD;
 import net.jadedmc.jadedbungee.features.party.PartyManager;
 import net.jadedmc.jadedbungee.features.party.commands.PartyCMD;
-import net.jadedmc.jadedbungee.listeners.ChatListener;
-import net.jadedmc.jadedbungee.listeners.PlayerDisconnectListener;
-import net.jadedmc.jadedbungee.listeners.PostLoginListener;
-import net.jadedmc.jadedbungee.listeners.ServerSwitchListener;
+import net.jadedmc.jadedbungee.listeners.*;
 import net.jadedmc.jadedbungee.player.CustomPlayerManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -47,6 +44,7 @@ public final class JadedBungee extends Plugin {
 
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerDisconnectListener(this));
+        getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
         getProxy().getPluginManager().registerListener(this, new PostLoginListener(this));
         getProxy().getPluginManager().registerListener(this, new ServerSwitchListener(this));
 
