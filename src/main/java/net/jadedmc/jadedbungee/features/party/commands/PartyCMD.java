@@ -254,7 +254,9 @@ public class PartyCMD extends Command {
 
         // Makes sure the player is in a party.
         if(plugin.partyManager().getParty(player) == null) {
-            player.chat("/party create");
+            // Creates the party.
+            plugin.partyManager().createParty(player);
+            ChatUtils.chat(player, "&a&lParty &8» &aParty as been created.");
         }
 
         // Gets the player's party,
