@@ -43,7 +43,7 @@ public class AdminChannel extends Channel {
         String rank  = customPlayer.getRank().toString();
         rank = rank.substring(0,1).toUpperCase() + rank.substring(1).toLowerCase();
 
-        return "&4&l(&6&lAdmin&4&l) &6&l" + rank + " &f" + player.getDisplayName() + " &8» &6" + message;
+        return "&5&l(&d&lAdmin&5&l) &d&l" + rank + " &f" + player.getDisplayName() + " &8» &d" + message;
     }
 
     /**
