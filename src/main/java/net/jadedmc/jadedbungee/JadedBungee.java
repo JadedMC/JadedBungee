@@ -3,6 +3,7 @@ package net.jadedmc.jadedbungee;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.jadedmc.jadedbungee.commands.misc.LobbyCMD;
+import net.jadedmc.jadedbungee.commands.misc.SeenCMD;
 import net.jadedmc.jadedbungee.features.chat.ChannelManager;
 import net.jadedmc.jadedbungee.features.chat.commands.AdminChatCMD;
 import net.jadedmc.jadedbungee.features.chat.commands.ChatCMD;
@@ -62,6 +63,7 @@ public final class JadedBungee extends Plugin {
 
         // Misc Commands
         getProxy().getPluginManager().registerCommand(this, new LobbyCMD(this));
+        getProxy().getPluginManager().registerCommand(this, new SeenCMD(this));
 
         // Plugin Messaging Channel
         getProxy().registerChannel("jadedmc:party");
