@@ -45,6 +45,7 @@ public final class JadedBungee extends Plugin {
         messageManager = new MessageManager();
 
         getProxy().getPluginManager().registerListener(this, new ChatListener(this));
+        getProxy().getPluginManager().registerListener(this, new LoginListener(this));
         getProxy().getPluginManager().registerListener(this, new PlayerDisconnectListener(this));
         getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
         getProxy().getPluginManager().registerListener(this, new PostLoginListener(this));

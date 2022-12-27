@@ -122,6 +122,13 @@ public class MySQL {
                     ");");
             player_logins.execute();
 
+            PreparedStatement skin_cache = connection.prepareStatement("CREATE TABLE IF NOT EXISTS skin_cache (" +
+                    "uuid VARCHAR(36)," +
+                    "skin VARCHAR(500)," +
+                    "PRIMARY KEY (uuid)" +
+                    ");");
+            skin_cache.execute();
+
             // Prevents losing connection to MySQL.
             plugin.getProxy().getScheduler().schedule(plugin, () -> {
                 try {
