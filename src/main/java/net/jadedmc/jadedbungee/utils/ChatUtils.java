@@ -53,12 +53,12 @@ public class ChatUtils {
     }
 
     /**
-     * A quick way to send a player a colored message.
-     * @param player Player to send message to.
+     * A quick way to send a CommandSender a colored message.
+     * @param sender CommandSender to send message to.
      * @param message The message being sent.
      */
-    public static void chat(ProxiedPlayer player, String message) {
-        player.sendMessage(translate(message));
+    public static void chat(CommandSender sender, String message) {
+        sender.sendMessage(translate(message));
     }
 
     /**
