@@ -31,6 +31,9 @@ public class PlayerDisconnectListener implements Listener {
     public void onDisconnect(PlayerDisconnectEvent event) {
         ProxiedPlayer player = event.getPlayer();
 
+        // Update the last time the player was online.
+        plugin.customPlayerManager().getPlayer(player).updateLastOnline();
+
         plugin.customPlayerManager().removePlayer(player);
         plugin.channelManager().removePlayer(player);
 

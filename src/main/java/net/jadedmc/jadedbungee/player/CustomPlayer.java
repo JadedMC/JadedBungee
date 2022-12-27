@@ -10,10 +10,12 @@ import java.sql.Timestamp;
 
 public class CustomPlayer {
     private final JadedBungee plugin;
+    private final ProxiedPlayer player;
     private Rank rank = Rank.DEFAULT;
 
     public CustomPlayer(JadedBungee plugin, ProxiedPlayer player) {
         this.plugin = plugin;
+        this.player = player;
 
         plugin.getProxy().getScheduler().runAsync(plugin, () -> {
             try {
@@ -75,4 +77,20 @@ public class CustomPlayer {
         return rank;
     }
 
+    public void updateLastOnline() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
+
+            try {
+                PreparedStatement statement = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET lastOnline = ? WHERE uuid = ?");
+                statement.setTimestamp(1, timestamp);
+                statement.setString(2, player.getUniqueId().toString());
+                statement.executeUpdate();
+            }
+            catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        });
+    }
 }
