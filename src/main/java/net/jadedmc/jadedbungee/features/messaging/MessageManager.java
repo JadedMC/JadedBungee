@@ -1,7 +1,10 @@
 package net.jadedmc.jadedbungee.features.messaging;
 
+import net.jadedmc.jadedbungee.JadedBungee;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,8 +14,13 @@ import java.util.Set;
  * This class manages all active conversations. This allows /reply to work.
  */
 public class MessageManager {
+    private final JadedBungee plugin;
     private final Map<ProxiedPlayer, ProxiedPlayer> conversations = new HashMap<>();
     private final Set<ProxiedPlayer> spying = new HashSet<>();
+
+    public MessageManager(JadedBungee plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Get all players with social spy enabled.
@@ -80,5 +88,40 @@ public class MessageManager {
         else {
             spying.add(player);
         }
+    }
+
+    /**
+     * Logs a chat message to the database.
+     * @param channel Channel the message was sent in.
+     * @param player The player who sent the message.
+     * @param message Message the player sent.
+     * @param filtered Whether the message was filtered.
+     */
+    public void log(String channel, ProxiedPlayer player, String message, boolean filtered) {
+        String name = player.getName();
+        String uuid = player.getUniqueId().toString();
+        String server = player.getServer().getInfo().getName();
+
+        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
+            try {
+                PreparedStatement statement = plugin.mySQL().getConnection().prepareStatement("INSERT INTO chat_logs (server,channel,uuid,username,message) VALUES (?,?,?,?,?)");
+                statement.setString(1, server);
+                statement.setString(2, channel);
+                statement.setString(3, uuid);
+                statement.setString(4, name);
+
+                if(filtered) {
+                    statement.setString(5, "(filtered) " + message);
+                }
+                else {
+                    statement.setString(5, message);
+                }
+
+                statement.executeUpdate();
+            }
+            catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        });
     }
 }

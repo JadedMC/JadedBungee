@@ -94,6 +94,6 @@ public class MessageCMD extends Command {
         plugin.messageManager().setReplyTarget(player, target);
 
         // Logs the message
-        plugin.channelManager().log("PRIVATE", player, "To " + target.getName() + ": " + message);
+        plugin.messageManager().log("PRIVATE", player, "To " + target.getName() + ": " + message, false);
     }
 }

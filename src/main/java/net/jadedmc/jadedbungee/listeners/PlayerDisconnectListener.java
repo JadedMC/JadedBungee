@@ -1,7 +1,6 @@
 package net.jadedmc.jadedbungee.listeners;
 
 import net.jadedmc.jadedbungee.JadedBungee;
-import net.jadedmc.jadedbungee.features.party.Party;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -33,14 +32,5 @@ public class PlayerDisconnectListener implements Listener {
 
         // Update the last time the player was online.
         plugin.customPlayerManager().getPlayer(player).updateLastOnline();
-
-        plugin.customPlayerManager().removePlayer(player);
-        plugin.channelManager().removePlayer(player);
-
-        Party party = plugin.partyManager().getParty(player);
-        if(party != null) {
-            party.removePlayer(player);
-            party.sendMessage("&aParty &8» &f" + player.getName() + " &adisconnected.");
-        }
     }
 }

@@ -6,9 +6,6 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 /**
  * This listens to the PostLoginEvent event, which is called every time a player successfully joins the server.
  * We use this to announce when a staff member joins to other staff members.
