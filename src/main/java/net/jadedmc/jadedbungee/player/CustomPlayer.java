@@ -31,6 +31,14 @@ public class CustomPlayer {
                         statement3.setTimestamp(1, timestamp);
                         statement3.setString(2, player.getUniqueId().toString());
                         statement3.executeUpdate();
+
+                        // Update name
+                        {
+                            PreparedStatement statement4 = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET player_name = ? WHERE uuid = ?");
+                            statement4.setString(1, player.getName());
+                            statement4.setString(2, player.getUniqueId().toString());
+                            statement4.executeUpdate();
+                        }
                     }
                     else {
                         PreparedStatement insertStatement = plugin.mySQL().getConnection().prepareStatement("INSERT INTO player_info (uuid,username,ip) VALUES (?,?,?)");
