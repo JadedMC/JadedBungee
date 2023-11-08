@@ -109,6 +109,7 @@ public class MySQL {
                     "experience INT DEFAULT 1," +
                     "firstOnline TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
                     "lastOnline TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                    "achievementPoints INT DEFAULT 0, " +
                     "PRIMARY KEY (uuid)" +
                     ");");
             player_info.execute();
