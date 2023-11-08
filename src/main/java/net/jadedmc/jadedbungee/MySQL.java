@@ -106,7 +106,7 @@ public class MySQL {
                     "username VARCHAR(16)," +
                     "ip VARCHAR(16)," +
                     "level INT DEFAULT 1," +
-                    "experience INT DEFAULT 1," +
+                    "experience INT DEFAULT 0," +
                     "firstOnline TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
                     "lastOnline TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
                     "achievementPoints INT DEFAULT 0, " +
