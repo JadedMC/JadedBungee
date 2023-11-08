@@ -34,7 +34,7 @@ public class CustomPlayer {
 
                         // Update name
                         {
-                            PreparedStatement statement4 = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET player_name = ? WHERE uuid = ?");
+                            PreparedStatement statement4 = plugin.mySQL().getConnection().prepareStatement("UPDATE player_info SET username = ? WHERE uuid = ?");
                             statement4.setString(1, player.getName());
                             statement4.setString(2, player.getUniqueId().toString());
                             statement4.executeUpdate();
