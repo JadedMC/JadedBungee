@@ -32,5 +32,7 @@ public class PlayerDisconnectListener implements Listener {
 
         // Update the last time the player was online.
         plugin.customPlayerManager().getPlayer(player).updateLastOnline();
+
+        plugin.customPlayerManager().removePlayer(player);
     }
 }
